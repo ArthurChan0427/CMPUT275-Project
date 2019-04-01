@@ -16,6 +16,10 @@
 #include <time.h>
 #include <unistd.h>
 
+#include <memory>
+#include "iCommand.h"
+#include "commandManager.h"
+
 using namespace std;
 
 /*** defines ***/
@@ -38,7 +42,11 @@ enum editorKey {
     PAGE_DOWN
 };
 
+CommandManager commandManager;
+
+
 /*** data ***/
+/*
 typedef struct erow {
     int size;
     int rsize;
@@ -60,7 +68,7 @@ struct editorConfig {
     char statusmsg[80];
     time_t statusmsg_time;
     struct termios orig_termios;
-};
+};*/
 
 struct editorConfig E;
 
@@ -598,8 +606,13 @@ void editorProcessKeypress() {
 
     switch (c) {
         case '\r':
-            editorInsertNewline();
-            break;
+        {
+            shared_ptr<ICommand> cmd1(new InsertNewLineCommand(&E));
+            commandManager.executeCmd(cmd1);
+            //editorInsertNewline();
+            break;    
+        }
+
 
         case CTRL_KEY('q'):
             if (E.dirty && quit_times > 0) {
@@ -629,9 +642,13 @@ void editorProcessKeypress() {
         case BACKSPACE:
         case CTRL_KEY('h'):
         case DEL_KEY:
+        {
             if (c == DEL_KEY) editorMoveCursor(ARROW_RIGHT);
-            editorDelChar();
+            shared_ptr<ICommand> cmd2(new BackSpaceCommand(&E));
+            commandManager.executeCmd(cmd2);
+            //editorDelChar();
             break;
+        }
 
         case PAGE_UP:
         case PAGE_DOWN:
@@ -659,9 +676,21 @@ void editorProcessKeypress() {
         case '\x1b':
             break;
 
-        default:
-            editorInsertChar(c);
+        case CTRL_KEY('z'):
+            commandManager.undo();
             break;
+
+        case CTRL_KEY('r'):
+            commandManager.redo();
+            break;
+
+        default:
+        {
+            shared_ptr<ICommand> cmd3(new InsertCharacterCommand(&E, c));
+            commandManager.executeCmd(cmd3);
+            //editorInsertChar(c);
+            break;
+        }
     }
 
     quit_times = KILO_QUIT_TIMES;
