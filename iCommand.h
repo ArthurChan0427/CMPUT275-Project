@@ -48,6 +48,9 @@ class ICommand {
         virtual void execute() = 0;
         virtual void undo() = 0;
         virtual void redo() = 0;
+        virtual string search() = 0;
+        virtual void update() = 0;
+        virtual void del() = 0;
 
     protected:
         editorConfig* E;
@@ -68,6 +71,12 @@ class BackSpaceCommand : public ICommand {
         void undo();
 
         void redo();
+
+        string search();
+
+        void update();
+
+        void del();
 
     private:
         char del_char = '\0';
@@ -94,6 +103,12 @@ class InsertCharacterCommand : public ICommand {
 
         void redo();
 
+        string search();
+
+        void update();
+
+        void del();
+
     private:
         int c;
 
@@ -112,6 +127,12 @@ class InsertNewLineCommand : public ICommand {
         void undo();
 
         void redo();
+
+        string search();
+
+        void update();
+
+        void del();
 
     private:
         void editorInsertNewline();
