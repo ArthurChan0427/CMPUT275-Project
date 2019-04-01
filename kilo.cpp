@@ -20,6 +20,7 @@
 #include <memory>
 #include "iCommand.h"
 #include "commandManager.h"
+#include "autoComplete.h"
 
 using namespace std;
 
@@ -46,6 +47,7 @@ enum editorKey {
 };
 
 CommandManager commandManager;
+AutoComplete autoComplete;
 
 
 /*** data ***/
