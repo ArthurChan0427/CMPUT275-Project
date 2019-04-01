@@ -15,6 +15,7 @@
 #include <termios.h>
 #include <time.h>
 #include <unistd.h>
+#include <string>
 
 #include <memory>
 #include "iCommand.h"
@@ -28,6 +29,8 @@ using namespace std;
 #define KILO_QUIT_TIMES 3
 
 #define CTRL_KEY(k) ((k) & 0x1f)
+
+string word = "";
 
 enum editorKey {
     BACKSPACE = 127,
@@ -605,6 +608,20 @@ void editorProcessKeypress() {
     int c = editorReadKey();
 
     switch (c) {
+        case ' ':
+            autoComplete.update(word);
+            word = "";
+
+        case c:
+            if(isalpha(c)) {
+                word += c;
+                string suggested = autoComplete.search(word);
+                // display suggested box (important task to accomplish before Tuesday)
+                // example function: display(suggested);
+            }
+
+        // implement delete word functionality
+
         case '\r':
         {
             shared_ptr<ICommand> cmd1(new InsertNewLineCommand(&E));
