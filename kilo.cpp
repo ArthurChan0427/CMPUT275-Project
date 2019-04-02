@@ -609,18 +609,16 @@ void editorProcessKeypress() {
 
     int c = editorReadKey();
 
+    if(isalpha(c)) {
+        word += c;
+        string suggested = autoComplete.search(word);
+        // display box of suggested word
+    }
+
     switch (c) {
         case ' ':
             autoComplete.update(word);
             word = "";
-
-        case c:
-            if(isalpha(c)) {
-                word += c;
-                string suggested = autoComplete.search(word);
-                // display suggested box (important task to accomplish before Tuesday)
-                // example function: display(suggested);
-            }
 
         // implement delete word functionality
 
