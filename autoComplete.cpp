@@ -6,14 +6,15 @@
 
 using namespace std;
 
-// map<string, unsigned int> words;
-// map<string, unsigned int> temp;
-words = AutoMap;
-temp = AutoMap;
+map<string, unsigned int> words;
+map<string, unsigned int> temp;
+// words = AutoMap;
+// temp = AutoMap;
 
 string AutoComplete::search(string s) {
+    // find strings containing substring
     for(map<string, unsigned int>::iterator iter = words.begin(); iter != words.end(); ++iter) {
-        if(iter.rfind(s, 0) == 0) {
+        if((iter->first).rfind(s, 0) == 0) {
             temp[iter->first] = iter->second;
         }
     }
@@ -21,6 +22,7 @@ string AutoComplete::search(string s) {
     string max_k;
     int max_v = 0;
 
+    // find string containing substring with the most number of occurrences
     for(map<string, unsigned int>::iterator iter = temp.begin(); iter != temp.end(); ++iter) {
         if(iter->second > max_v) {
             max_k = iter->first;
@@ -34,7 +36,7 @@ string AutoComplete::search(string s) {
 }
 
 void AutoComplete::update(string s) {
-    iter = words.find(s);
+    map<string, unsigned int>::iterator iter = words.find(s);
     if(iter == words.end()) {
         words[s] = 1;
     } else {
@@ -42,13 +44,13 @@ void AutoComplete::update(string s) {
     }
 }
 
-void AutoComplete::del(string s) {
-    iter = words.find(s);
-    if(iter != words.end()) {
-        if(iter->second == 1) {
-            words.erase(iter);
-        } else if(iter->second > 1) {
-            iter->second -= 1;
-        }
-    }
-}
+// void AutoComplete::del(string s) {
+//     map<string, unsigned int>::iterator iter = words.find(s);
+//     if(iter != words.end()) {
+//         if(iter->second == 1) {
+//             words.erase(iter);
+//         } else if(iter->second > 1) {
+//             iter->second -= 1;
+//         }
+//     }
+// }
