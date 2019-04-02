@@ -20,7 +20,7 @@ class AutoComplete {
 
         void update(string s);
 
-        void del(string s);
+        // void del(string s);
 };
 
 #endif
