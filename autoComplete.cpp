@@ -8,11 +8,11 @@ using namespace std;
 
 map<string, unsigned int> words;
 map<string, unsigned int> temp;
-// words = AutoMap;
-// temp = AutoMap;
+// words = AutoMap();
+// temp = AutoMap();
 
 string AutoComplete::search(string s) {
-    // find strings containing substring
+    // find strings starting with substring s
     for(map<string, unsigned int>::iterator iter = words.begin(); iter != words.end(); ++iter) {
         if((iter->first).rfind(s, 0) == 0) {
             temp[iter->first] = iter->second;
@@ -32,7 +32,7 @@ string AutoComplete::search(string s) {
 
     temp.clear();
 
-    return max_k;
+    return max_k.erase(0, s.length());
 }
 
 void AutoComplete::update(string s) {
