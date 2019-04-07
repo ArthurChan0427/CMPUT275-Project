@@ -31,8 +31,6 @@ using namespace std;
 
 #define CTRL_KEY(k) ((k) & 0x1f)
 
-string word = "";
-
 enum editorKey {
     BACKSPACE = 127,
     ARROW_LEFT = 1000,
@@ -48,6 +46,9 @@ enum editorKey {
 
 CommandManager commandManager;
 AutoComplete autoComplete;
+
+// global variables
+string word = "";
 
 
 /*** data ***/
@@ -609,23 +610,20 @@ void editorProcessKeypress() {
 
     int c = editorReadKey();
 
-    if(isalpha(c)) {
-        word += c;
-        string suggested = autoComplete.search(word);
-        // display box of suggested word
-    }
-
     switch (c) {
         case ' ':
+        {
             autoComplete.update(word);
             word = "";
-
-        // implement delete word functionality
+            shared_ptr<ICommand> cmd1(new InsertCharacterCommand(&E, c));
+            commandManager.executeCmd(cmd1);
+            break;
+        }
 
         case '\r':
         {
-            shared_ptr<ICommand> cmd1(new InsertNewLineCommand(&E));
-            commandManager.executeCmd(cmd1);
+            shared_ptr<ICommand> cmd2(new InsertNewLineCommand(&E));
+            commandManager.executeCmd(cmd2);
             //editorInsertNewline();
             break;    
         }
@@ -661,8 +659,8 @@ void editorProcessKeypress() {
         case DEL_KEY:
         {
             if (c == DEL_KEY) editorMoveCursor(ARROW_RIGHT);
-            shared_ptr<ICommand> cmd2(new BackSpaceCommand(&E));
-            commandManager.executeCmd(cmd2);
+            shared_ptr<ICommand> cmd3(new BackSpaceCommand(&E));
+            commandManager.executeCmd(cmd3);
             //editorDelChar();
             break;
         }
@@ -703,10 +701,27 @@ void editorProcessKeypress() {
 
         default:
         {
-            shared_ptr<ICommand> cmd3(new InsertCharacterCommand(&E, c));
-            commandManager.executeCmd(cmd3);
-            //editorInsertChar(c);
+            shared_ptr<ICommand> cmd4(new InsertCharacterCommand(&E, c));
+            commandManager.executeCmd(cmd4);
             break;
+        }
+    }
+
+    // if character is letter
+    if(isalpha(c)) {
+        word += c;
+        string suggested = autoComplete.search(word);
+
+        // copy string suggested into a char array
+        // https://www.techiedelight.com/convert-string-char-array-cpp/
+        char arr[suggested.size() + 1];
+        suggested.copy(arr, suggested.size() + 1);
+        arr[suggested.size()] = '\0';
+
+        // display the characters of the suggested word one at a time
+        for(int i=0; i<suggested.size()+1; ++i) {
+            shared_ptr<ICommand> cmd5(new InsertCharacterCommand(&E, arr[i]));
+            commandManager.executeCmd(cmd5);
         }
     }
 
