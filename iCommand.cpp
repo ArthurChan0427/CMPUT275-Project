@@ -11,6 +11,9 @@
 
 using namespace std;
 
+// Below contains the implementation of all command object methods.
+// All implementations except those for the execute, undo, and redo methods are adapted from the base code.
+
 ICommand::ICommand(editorConfig* e) {
     this->E = e;
 }
@@ -58,22 +61,24 @@ void ICommand::editorInsertRow(int at, char *s, size_t len) {
 BackSpaceCommand::BackSpaceCommand(editorConfig* e) : ICommand(e) {}
 
 void BackSpaceCommand::execute() {
-    editorDelChar();
-    this->cx = E->cx;
+    editorDelChar(); // delete a character or an empty line
+    this->cx = E->cx; // remember the cursor's location immediately after the executing the command
     this->cy = E->cy;
 }
 
 void BackSpaceCommand::undo() {
-    E->cx = this->cx;
+    E->cx = this->cx; // restore the cursor's location that were remembered
     E->cy = this->cy;
     if (del_char == '\0') {
+        // If an empty line was deleted, insert a new line
         InsertNewLineCommand insertNewLineCommand(E);
         insertNewLineCommand.execute();
     } else {
+        // otherwise, insert the character that was deleted
         InsertCharacterCommand insertCharacterCommand(E, del_char);
         insertCharacterCommand.execute();
     }
-    this->cx = E->cx;
+    this->cx = E->cx; // again, remember the cursor's location immediately after executing the command
     this->cy = E->cy;
 }
 
