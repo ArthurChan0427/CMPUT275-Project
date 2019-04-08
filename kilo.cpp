@@ -652,6 +652,8 @@ void editorProcessKeypress() {
 
         case '\r':
         {
+            autoComplete.update(word);
+            word = "";
             shared_ptr<ICommand> cmd2(new InsertNewLineCommand(&E));
             commandManager.executeCmd(cmd2);
             //editorInsertNewline();
