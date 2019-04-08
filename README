@@ -23,7 +23,7 @@ Running Instructions:
     1. Navigate to the directory containing all files included above
     2. Run 'make kilo' to compile the executable called "kilo"
     3. Run './kilo' to open a blank text editor in Terminal
-    4. Run './kilo (name of text file)' to open a text file in Terminal
+    4. Run './kilo (name of text file)' to open a text file in Terminal (use the file 'text' to test this, so the command './kilo text')
     5. Navigate the editor using the up-down-left-right arrow keys to move the cursor
     6. Type any character to add that character to the editor
     7. Use ctrl-z to undo, use ctrl-r to redo
