@@ -739,7 +739,7 @@ void editorProcessKeypress() {
         }
     }
     /*
-        alpha(c);
+    alpha(c);
     /*
     */
     quit_times = KILO_QUIT_TIMES;
