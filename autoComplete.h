@@ -21,8 +21,6 @@ typedef map<string, unsigned int> autoMap;
 
 class AutoComplete {
     private:
-        autoMap words;
-        autoMap temp;
 
     public:
         string search(string s);
