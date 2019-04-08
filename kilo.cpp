@@ -614,6 +614,27 @@ void editorMoveCursor(int key) {
     }
 }
 
+void alpha(char c) {
+    // if character is letter
+    if(isalpha(c)) {
+        word += c;
+        // search for the word typed so far in the map of stored words
+        string suggested = autoComplete.search(word);
+
+        // copy string suggested into a char array
+        // https://www.techiedelight.com/convert-string-char-array-cpp/
+        char arr[suggested.size() + 1];
+        suggested.copy(arr, suggested.size() + 1);
+        arr[suggested.size()] = '\0';
+
+        // display the characters of the suggested word one at a time
+        for(int i=0; i<suggested.size()+1; ++i) {
+            shared_ptr<ICommand> cmd5(new InsertCharacterCommand(&E, arr[i]));
+            commandManager.executeCmd(cmd5);
+        }
+    }
+}
+
 void editorProcessKeypress() {
     static int quit_times = KILO_QUIT_TIMES;
 
@@ -715,25 +736,10 @@ void editorProcessKeypress() {
             break;
         }
     }
-
-    // if character is letter
-    if(isalpha(c)) {
-        word += c;
-        string suggested = autoComplete.search(word);
-
-        // copy string suggested into a char array
-        // https://www.techiedelight.com/convert-string-char-array-cpp/
-        char arr[suggested.size() + 1];
-        suggested.copy(arr, suggested.size() + 1);
-        arr[suggested.size()] = '\0';
-
-        // display the characters of the suggested word one at a time
-        for(int i=0; i<suggested.size()+1; ++i) {
-            shared_ptr<ICommand> cmd5(new InsertCharacterCommand(&E, arr[i]));
-            commandManager.executeCmd(cmd5);
-        }
-    }
-
+    /*
+        alpha(c);
+    /*
+    */
     quit_times = KILO_QUIT_TIMES;
 }
 
