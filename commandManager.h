@@ -22,6 +22,7 @@ typedef stack<shared_ptr<ICommand>> commandStack_t;
 
 class CommandManager {
     private:
+        // executed command objects are stored in undoStack and redoStack
         commandStack_t undoStack;
         commandStack_t redoStack;
 
