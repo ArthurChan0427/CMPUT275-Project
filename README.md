@@ -13,3 +13,8 @@ Makefile Targets:
     6. iCommand.o: Compiles iCommand.cpp with other dependencies
 
     7. clean: Remove all object files and executables
+
+Online Sources:
+    Base code: https://viewsourcecode.org/snaptoken/kilo/
+    Command design pattern for Undo/Redo: http://gernotklingler.com/blog/implementing-undoredo-with-the-command-pattern/
+    
