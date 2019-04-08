@@ -28,6 +28,7 @@ using namespace std;
 
 #define KILO_TAB_STOP 8
 
+// variable of type erow contains all data associated with a row of text
 typedef struct erow {
     int size;
     int rsize;
@@ -35,6 +36,7 @@ typedef struct erow {
     char *render;
 } erow;
 
+// editorConfig contains all editor states which are modified by user inputs
 struct editorConfig {
     int cx, cy;
     int rx;
@@ -51,10 +53,13 @@ struct editorConfig {
     struct termios orig_termios;
 };
 
+// General input command object
 class ICommand {
     public:
         ICommand(editorConfig* e);
-
+        
+        // Each specific command objects will have their own
+        // implementation to execute, undo, and redo procedures.
         virtual void execute() = 0;
         virtual void undo() = 0;
         virtual void redo() = 0;
@@ -63,14 +68,14 @@ class ICommand {
         // virtual void del() = 0;
 
     protected:
-        editorConfig* E;
-        int cx, cy;
+        editorConfig* E; // E is the single shared instance of the struct EditorConfig
+        int cx, cy; // Each command object need to remember the cursor's position before executing the corresponding procedures.
 
+        // methods adapted from the base code
         void editorUpdateRow(erow *row);
 
         void editorInsertRow(int at, char *s, size_t len);
 };
-
 
 class BackSpaceCommand : public ICommand {
     public:
@@ -91,6 +96,7 @@ class BackSpaceCommand : public ICommand {
     private:
         char del_char = '\0';
 
+        // methods adapted from the base code
         void editorFreeRow(erow *row);
 
         void editorDelRow(int at);
@@ -122,6 +128,7 @@ class InsertCharacterCommand : public ICommand {
     private:
         int c;
 
+       // methods adapted from the base code
         void editorRowInsertChar(erow *row, int at, int c);
 
         void editorInsertChar(int c);
@@ -145,6 +152,7 @@ class InsertNewLineCommand : public ICommand {
         // void del();
 
     private:
+        // method adapted from the base code
         void editorInsertNewline();
 };
 
