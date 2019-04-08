@@ -7,6 +7,8 @@
 //    Final Project: Terminal Text Editor with Auto-Completion and Undo/Redo Features
 // ------------------------------------------------------------------------------------
 
+// Source: http://gernotklingler.com/blog/implementing-undoredo-with-the-command-pattern/
+
 #ifndef COMMAND_MANAGER_H
 #define COMMAND_MANAGER_H
 
