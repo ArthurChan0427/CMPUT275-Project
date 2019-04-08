@@ -28,7 +28,8 @@ Running Instructions:
     6. Type any character to add that character to the editor
     7. Use ctrl-z to undo, use ctrl-r to redo
     8. *** When typing, the editor will display a recommended word if a word that begins with the word being typed has been saved into the system already
-    9. Use ctrl-q to exit the editor
+    9. Use ctrl-s to save the file
+    10. Use ctrl-q to exit the editor
 
     *** See Notes and Assumptions section for details on how to partially test this functionality
 
